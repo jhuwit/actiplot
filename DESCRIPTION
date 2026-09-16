@@ -9,7 +9,10 @@ Authors@R: c(
            email = "muschellij2@gmail.com",
            comment = c(ORCID = "0000-0001-6469-1750"))
     )
-Description: Provides ggplot2 plots for minute-level activity data, including step counts and activity counts. Time series can be displayed over the full recording period or aligned by time of day and faceted into one row per date.
+Description: Provides 'ggplot2' plots for minute-level activity data, 
+  including step counts and activity counts. Time series can be displayed 
+  over the full recording period or aligned by time of day and 
+  faceted into one row per date.
 License: GPL-3
 Depends: 
     R (>= 3.5)
