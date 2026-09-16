@@ -89,7 +89,7 @@ acti_plot_day <- function(data, value, time = time, breaks = "4 hours",
     ggplot2::aes(x = .data[[".acti_minutes"]], y = .data[[value_name]])
   ) +
     ggplot2::geom_line(...) +
-    ggplot2::facet_grid(rows = ggplot2::vars(.acti_facet)) +
+    ggplot2::facet_grid(rows = ggplot2::vars(!!rlang::sym(".acti_facet"))) +
     ggplot2::labs(x = "Time of day", y = value_name)
 
   .acti_plot_add_time_of_day_scale(
