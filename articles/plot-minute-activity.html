@@ -69,7 +69,9 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jhuwit/actiplot" class="external-link">actiplot</a></span><span class="op">)</span></span></code></pre></div>
 <p>This vignette uses the packaged <code>acti_minute_data</code>
 accelerometer recording. It contains seven days of minute-level
-vector-magnitude activity counts.</p>
+vector-magnitude activity counts. It is processed from the <a href="https://springernature.figshare.com/collections/Upper_limb_activity_of_twenty_myoelectric_prosthesis_users_and_twenty_healthy_anatomically_intact_adults_/4457855" class="external-link">upper-limb
+activity Figshare collection</a> described by <a href="https://doi.org/10.1038/s41597-019-0211-6" class="external-link">Chadwell et
+al. (2019)</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">activity</span> <span class="op">&lt;-</span> <span class="va">acti_minute_data</span></span></code></pre></div>
 <div class="section level2">
@@ -81,6 +83,16 @@ duration strings and sets the interval of the time-axis labels.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plot-minute-activity_files/figure-html/full-time-1.png" class="r-plt" alt="" width="700"></p>
+<p>For a more legible complete-recording axis, set
+<code>x_axis = "12 hours"</code>. It shows date and 12-hour-clock labels
+at midnight and noon. Alternatively, <code>x_axis = "midnight"</code>
+prints just the date at midnight, without <code>00:00:00</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, x_axis <span class="op">=</span> <span class="st">"12 hours"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/full-time-readable-axis-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, x_axis <span class="op">=</span> <span class="st">"midnight"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/full-time-readable-axis-2.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="daily-aligned-rows">Daily aligned rows<a class="anchor" aria-label="anchor" href="#daily-aligned-rows"></a>
@@ -88,16 +100,25 @@ duration strings and sets the interval of the time-axis labels.</p>
 <p>Use <code><a href="../reference/acti_plot_time.html">acti_plot_day()</a></code> to align each day on the same
 time-of-day axis. Each facet row is one calendar date, which makes
 day-to-day activity patterns easy to compare.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plot-minute-activity_files/figure-html/daily-1.png" class="r-plt" alt="" width="700"></p>
+<p>Set <code>facet = "month-day"</code> to remove the year from date
+strips, or <code>facet = "day"</code> to use the baseline-relative day
+calculated by <code><a href="https://jhuwit.github.io/actibase/reference/acti_separate_time.html" class="external-link">actibase::acti_separate_times()</a></code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, facet <span class="op">=</span> <span class="st">"month-day"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/daily-facet-labels-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, facet <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/daily-facet-labels-2.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="date-by-time-heat-map">Date-by-time heat map<a class="anchor" aria-label="anchor" href="#date-by-time-heat-map"></a>
 </h2>
 <p><code><a href="../reference/acti_plot_time.html">acti_plot_heatmap()</a></code> uses the same alignment with counts
 represented by fill.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_heatmap</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plot-minute-activity_files/figure-html/heatmap-1.png" class="r-plt" alt="" width="700"></p>
 </div>

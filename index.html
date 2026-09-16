@@ -57,6 +57,10 @@
 <div class="page-header"><h1 id="actiplot">actiplot<a class="anchor" aria-label="anchor" href="#actiplot"></a>
 </h1></div>
 <p><code>actiplot</code> provides <code>ggplot2</code> visualizations for minute-level activity data, including steps and activity counts. It works with the standardized timestamp conventions used throughout the activerse.</p>
+<div class="section level2">
+<h2 id="example-data-provenance">Example-data provenance<a class="anchor" aria-label="anchor" href="#example-data-provenance"></a>
+</h2>
+<p><code>acti_minute_data</code> is a processed minute-level recording drawn from the <a href="https://springernature.figshare.com/collections/Upper_limb_activity_of_twenty_myoelectric_prosthesis_users_and_twenty_healthy_anatomically_intact_adults_/4457855" class="external-link">Figshare collection of upper-limb activity data</a> from 20 myoelectric prosthesis users and 20 anatomically intact adults. Please cite the original data descriptor when using it: Chadwell A, Kenney L, Granat M, Thies S, Galpin A, and Head J (2019), <a href="https://doi.org/10.1038/s41597-019-0211-6" class="external-link"><em>Upper limb activity of twenty myoelectric prosthesis users and twenty healthy anatomically intact adults</em></a>, <em>Scientific Data</em> 6, 199.</p>
 <p>Core entry points:</p>
 <ul>
 <li>
@@ -66,6 +70,7 @@
 <li>
 <code><a href="reference/acti_plot_time.html">acti_plot_heatmap()</a></code> for a date-by-time activity heat map</li>
 </ul>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -85,6 +90,23 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example-2.png"><!-- --></p>
+<p>Daily facets can use a compact month-and-day label or baseline-relative day numbers: <code>facet = "month-day"</code> and <code>facet = "day"</code>, respectively.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, facet <span class="op">=</span> <span class="st">"month-day"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-day-facets-1.png"><!-- --></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, facet <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-day-facets-2.png"><!-- --></p>
+<p>For a complete recording, <code>x_axis = "12 hours"</code> labels midnight and noon with both the date and a 12-hour clock. Use <code>x_axis = "midnight"</code> when a date-only label at midnight is preferred.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">acti_minute_data</span>, <span class="va">counts</span>, x_axis <span class="op">=</span> <span class="st">"12 hours"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-time-axis-labels-1.png"><!-- --></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">acti_minute_data</span>, <span class="va">counts</span>, x_axis <span class="op">=</span> <span class="st">"midnight"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-time-axis-labels-2.png"><!-- --></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">acti_minute_data</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-1-1.png"><!-- --></p>
 </div>
 </div>
 
