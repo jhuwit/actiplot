@@ -17,6 +17,14 @@
 #' @param breaks A single duration such as `"1 hour"`, `"4 hours"`, or
 #'   `"15 mins"`. It controls x-axis spacing. Use `NULL` for ggplot2's
 #'   default on the full-time plot or no specified breaks on aligned plots.
+#' @param x_axis The x-axis labelling scheme for `acti_plot_time()`. Use
+#'   `"default"` to use `breaks` or ggplot2's default; `"12 hours"` to show
+#'   a date and 12-hour clock label every 12 hours; or `"midnight"` to label
+#'   each date only at midnight. The latter two options set their own breaks.
+#' @param facet The facet labels for `acti_plot_day()`: `"date"` for the full
+#'   date, `"month-day"` for a date without the year, or `"day"` for days
+#'   since the first recording day (as calculated by
+#'   [actibase::acti_separate_times()]).
 #' @param ... Additional arguments passed to the primary geom.
 #'
 #' @return A ggplot object.
@@ -25,13 +33,17 @@
 #' activity <- acti_minute_data[seq_len(120), ]
 #'
 #' acti_plot_time(activity, counts, breaks = "1 hour")
+#' acti_plot_time(acti_minute_data, counts, x_axis = "12 hours")
+#' acti_plot_time(acti_minute_data, counts, x_axis = "midnight")
 #' acti_plot_day(activity, "counts", breaks = "1 hour")
 #' acti_plot_heatmap(activity, counts, breaks = "1 hour")
 #'
 #' @export
-acti_plot_time <- function(data, value, time = time, breaks = NULL, ...) {
+acti_plot_time <- function(data, value, time = time, breaks = NULL,
+                           x_axis = c("default", "12 hours", "midnight"), ...) {
   value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
   time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
+  x_axis <- match.arg(x_axis)
   prepared <- .acti_plot_prepare(data, value_name, time_name)
 
   plot <- ggplot2::ggplot(
@@ -41,7 +53,21 @@ acti_plot_time <- function(data, value, time = time, breaks = NULL, ...) {
     ggplot2::geom_line(...) +
     ggplot2::labs(x = "Time", y = value_name)
 
-  if (!is.null(breaks)) {
+  if (x_axis == "12 hours") {
+    plot <- plot + ggplot2::scale_x_datetime(
+      breaks = .acti_plot_datetime_breaks(
+        "12 hours", .acti_plot_timezone(prepared[["time"]])
+      ),
+      date_labels = "%b %d\n%I %p"
+    )
+  } else if (x_axis == "midnight") {
+    plot <- plot + ggplot2::scale_x_datetime(
+      breaks = .acti_plot_datetime_breaks(
+        "midnight", .acti_plot_timezone(prepared[["time"]])
+      ),
+      date_labels = "%b %d"
+    )
+  } else if (!is.null(breaks)) {
     .acti_plot_break_minutes(breaks)
     plot <- plot + ggplot2::scale_x_datetime(date_breaks = breaks)
   }
@@ -50,17 +76,20 @@ acti_plot_time <- function(data, value, time = time, breaks = NULL, ...) {
 
 #' @rdname acti_plot_time
 #' @export
-acti_plot_day <- function(data, value, time = time, breaks = "4 hours", ...) {
+acti_plot_day <- function(data, value, time = time, breaks = "4 hours",
+                          facet = c("date", "month-day", "day"), ...) {
   value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
   time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
+  facet <- match.arg(facet)
   prepared <- .acti_plot_prepare(data, value_name, time_name)
+  prepared[[".acti_facet"]] <- .acti_plot_facet(prepared, facet)
 
   plot <- ggplot2::ggplot(
     prepared,
     ggplot2::aes(x = .data[[".acti_minutes"]], y = .data[[value_name]])
   ) +
     ggplot2::geom_line(...) +
-    ggplot2::facet_grid(rows = ggplot2::vars(date)) +
+    ggplot2::facet_grid(rows = ggplot2::vars(.acti_facet)) +
     ggplot2::labs(x = "Time of day", y = value_name)
 
   .acti_plot_add_time_of_day_scale(
@@ -143,6 +172,45 @@ acti_plot_heatmap <- function(data, value, time = time, breaks = "4 hours", ...)
     stop("`breaks` must be greater than zero and no more than 24 hours.", call. = FALSE)
   }
   minutes
+}
+
+.acti_plot_timezone <- function(time) {
+  timezone <- attr(time, "tzone")
+  if (is.null(timezone) || !nzchar(timezone[1L])) {
+    return("UTC")
+  }
+  timezone[1L]
+}
+
+.acti_plot_datetime_breaks <- function(interval, timezone) {
+  function(limits) {
+    limits <- as.POSIXct(limits, origin = "1970-01-01", tz = timezone)
+    dates <- seq(
+      as.Date(limits[1L], tz = timezone) - 1,
+      as.Date(limits[2L], tz = timezone) + 1,
+      by = "day"
+    )
+    midnight <- as.POSIXct(dates, tz = timezone)
+    breaks <- if (identical(interval, "12 hours")) {
+      sort(c(midnight, midnight + 12 * 60 * 60))
+    } else {
+      midnight
+    }
+    breaks[breaks >= limits[1L] & breaks <= limits[2L]]
+  }
+}
+
+.acti_plot_facet <- function(data, facet) {
+  if (identical(facet, "date")) {
+    return(data[["date"]])
+  }
+  if (identical(facet, "month-day")) {
+    labels <- format(data[["date"]], "%b %d")
+    return(factor(labels, levels = unique(labels[order(data[["date"]])])))
+  }
+  day <- data[["day"]]
+  labels <- paste("Day", day)
+  factor(labels, levels = paste("Day", sort(unique(day))))
 }
 
 .acti_plot_add_time_of_day_scale <- function(plot, breaks, limits) {

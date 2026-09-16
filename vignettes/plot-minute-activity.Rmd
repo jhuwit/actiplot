@@ -20,6 +20,9 @@ library(actiplot)
 
 This vignette uses the packaged `acti_minute_data` accelerometer recording.
 It contains seven days of minute-level vector-magnitude activity counts.
+It is processed from the [upper-limb activity Figshare
+collection](https://springernature.figshare.com/collections/Upper_limb_activity_of_twenty_myoelectric_prosthesis_users_and_twenty_healthy_anatomically_intact_adults_/4457855)
+described by [Chadwell et al. (2019)](https://doi.org/10.1038/s41597-019-0211-6).
 
 ```{r data}
 activity <- acti_minute_data
@@ -35,6 +38,15 @@ the time-axis labels.
 acti_plot_time(activity, counts, breaks = "4 hours")
 ```
 
+For a more legible complete-recording axis, set `x_axis = "12 hours"`. It
+shows date and 12-hour-clock labels at midnight and noon. Alternatively,
+`x_axis = "midnight"` prints just the date at midnight, without `00:00:00`.
+
+```{r full-time-readable-axis}
+acti_plot_time(activity, counts, x_axis = "12 hours")
+acti_plot_time(activity, counts, x_axis = "midnight")
+```
+
 ## Daily aligned rows
 
 Use `acti_plot_day()` to align each day on the same time-of-day axis. Each
@@ -43,6 +55,15 @@ to compare.
 
 ```{r daily}
 acti_plot_day(activity, counts, breaks = "4 hours")
+```
+
+Set `facet = "month-day"` to remove the year from date strips, or
+`facet = "day"` to use the baseline-relative day calculated by
+`actibase::acti_separate_times()`.
+
+```{r daily-facet-labels}
+acti_plot_day(activity, counts, facet = "month-day")
+acti_plot_day(activity, counts, facet = "day")
 ```
 
 ## Date-by-time heat map

@@ -8,7 +8,11 @@ test_that("all plotting functions accept packaged minute-level data", {
 
   expect_s3_class(acti_plot_time(data, counts), "ggplot")
   expect_s3_class(acti_plot_time(data, "counts", breaks = "4 hours"), "ggplot")
+  expect_s3_class(acti_plot_time(data, counts, x_axis = "12 hours"), "ggplot")
+  expect_s3_class(acti_plot_time(data, counts, x_axis = "midnight"), "ggplot")
   expect_s3_class(acti_plot_day(data, counts), "ggplot")
+  expect_s3_class(acti_plot_day(data, counts, facet = "month-day"), "ggplot")
+  expect_s3_class(acti_plot_day(data, counts, facet = "day"), "ggplot")
   expect_s3_class(acti_plot_day(data, "counts", breaks = NULL), "ggplot")
   expect_s3_class(acti_plot_heatmap(data, counts, breaks = "15 mins"), "ggplot")
 })
@@ -22,6 +26,20 @@ test_that("day plots align time of day without expanding to a full day", {
   expect_equal(length(plot$facet$params$rows), 1L)
   expect_equal(length(unique(built$data[[1]]$PANEL)), 3L)
   expect_equal(built$layout$panel_params[[1]]$x.range, c(720, 839))
+})
+
+test_that("day facets support dates without years and baseline-relative days", {
+  data <- example_activity()
+  month_day <- ggplot2::ggplot_build(
+    acti_plot_day(data, counts, facet = "month-day")
+  )$layout$layout$.acti_facet
+  baseline_day <- ggplot2::ggplot_build(
+    acti_plot_day(data, counts, facet = "day")
+  )$layout$layout$.acti_facet
+
+  expect_equal(as.character(month_day), c("Jun 02", "Jun 03", "Jun 04"))
+  expect_equal(as.character(baseline_day), c("Day 1", "Day 2", "Day 3"))
+  expect_error(acti_plot_day(data, counts, facet = "weekday"), "should be one of")
 })
 
 test_that("column selection, input types, and breaks are validated", {
@@ -51,6 +69,27 @@ test_that("break durations and labels are calculated correctly", {
   expect_equal(.acti_plot_time_labels(c(0, 15, 60, 1440)), c("00:00", "00:15", "01:00", "24:00"))
 })
 
+test_that("full-time x-axis presets use readable breaks and labels", {
+  data <- example_activity()
+  twelve_hour <- ggplot2::ggplot_build(
+    acti_plot_time(data, counts, x_axis = "12 hours")
+  )$layout$panel_params[[1]]$x
+  midnight <- ggplot2::ggplot_build(
+    acti_plot_time(data, counts, x_axis = "midnight")
+  )$layout$panel_params[[1]]$x
+
+  twelve_hour_breaks <- twelve_hour$breaks[!is.na(twelve_hour$breaks)]
+  midnight_breaks <- midnight$breaks[!is.na(midnight$breaks)]
+  expect_true(all(diff(twelve_hour_breaks) == 12 * 60 * 60))
+  expect_true(grepl("\n", twelve_hour$get_labels(twelve_hour_breaks)[1L]))
+  expect_equal(format(
+    as.POSIXct(midnight_breaks, origin = "1970-01-01", tz = "GMT"),
+    "%H:%M:%S"
+  ), rep("00:00:00", length(midnight_breaks)))
+  expect_false(any(grepl("00:00:00", midnight$get_labels(midnight_breaks), fixed = TRUE)))
+  expect_error(acti_plot_time(data, counts, x_axis = "monthly"), "should be one of")
+})
+
 test_that("plots have stable visual output", {
   data <- example_activity()
 
@@ -59,8 +98,20 @@ test_that("plots have stable visual output", {
     acti_plot_time(data, counts, breaks = "4 hours")
   )
   vdiffr::expect_doppelganger(
+    "minute-level counts with twelve-hour labels",
+    acti_plot_time(data, counts, x_axis = "12 hours")
+  )
+  vdiffr::expect_doppelganger(
+    "minute-level counts with midnight date labels",
+    acti_plot_time(data, counts, x_axis = "midnight")
+  )
+  vdiffr::expect_doppelganger(
     "daily aligned minute-level counts",
     acti_plot_day(data, counts, breaks = "4 hours")
+  )
+  vdiffr::expect_doppelganger(
+    "daily aligned counts with baseline-day facets",
+    acti_plot_day(data, counts, breaks = "4 hours", facet = "day")
   )
   vdiffr::expect_doppelganger(
     "minute-level counts heatmap",

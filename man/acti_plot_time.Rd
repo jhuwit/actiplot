@@ -6,9 +6,23 @@
 \alias{acti_plot_heatmap}
 \title{Plot minute-level activity over time}
 \usage{
-acti_plot_time(data, value, time = time, breaks = NULL, ...)
+acti_plot_time(
+  data,
+  value,
+  time = time,
+  breaks = NULL,
+  x_axis = c("default", "12 hours", "midnight"),
+  ...
+)
 
-acti_plot_day(data, value, time = time, breaks = "4 hours", ...)
+acti_plot_day(
+  data,
+  value,
+  time = time,
+  breaks = "4 hours",
+  facet = c("date", "month-day", "day"),
+  ...
+)
 
 acti_plot_heatmap(data, value, time = time, breaks = "4 hours", ...)
 }
@@ -25,7 +39,17 @@ For example, \code{steps} or \code{"counts"}.}
 \code{"15 mins"}. It controls x-axis spacing. Use \code{NULL} for ggplot2's
 default on the full-time plot or no specified breaks on aligned plots.}
 
+\item{x_axis}{The x-axis labelling scheme for \code{acti_plot_time()}. Use
+\code{"default"} to use \code{breaks} or ggplot2's default; \code{"12 hours"} to show
+a date and 12-hour clock label every 12 hours; or \code{"midnight"} to label
+each date only at midnight. The latter two options set their own breaks.}
+
 \item{...}{Additional arguments passed to the primary geom.}
+
+\item{facet}{The facet labels for \code{acti_plot_day()}: \code{"date"} for the full
+date, \code{"month-day"} for a date without the year, or \code{"day"} for days
+since the first recording day (as calculated by
+\code{\link[actibase:acti_separate_times]{actibase::acti_separate_times()}}).}
 }
 \value{
 A ggplot object.
@@ -46,6 +70,8 @@ time-of-day variables.
 activity <- acti_minute_data[seq_len(120), ]
 
 acti_plot_time(activity, counts, breaks = "1 hour")
+acti_plot_time(acti_minute_data, counts, x_axis = "12 hours")
+acti_plot_time(acti_minute_data, counts, x_axis = "midnight")
 acti_plot_day(activity, "counts", breaks = "1 hour")
 acti_plot_heatmap(activity, counts, breaks = "1 hour")
 
