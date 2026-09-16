@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Plotting Methods for Activity Data • actiplot</title>
+<title>Plotting Minute-Level Activity Data • actiplot</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Plotting Methods for Activity Data">
-<meta name="description" content="Provides functions for plotting activity data and other time series.">
-<meta property="og:description" content="Provides functions for plotting activity data and other time series.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Plotting Minute-Level Activity Data">
+<meta name="description" content="Provides ggplot2 plots for minute-level activity data, including step counts and activity counts. Time series can be displayed over the full recording period or aligned by time of day and faceted into one row per date.">
+<meta property="og:description" content="Provides ggplot2 plots for minute-level activity data, including step counts and activity counts. Time series can be displayed over the full recording period or aligned by time of day and faceted into one row per date.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -48,59 +48,40 @@
 <div class="row">
   <main id="main" class="col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="actiquantiles">actiquantiles<a class="anchor" aria-label="anchor" href="#actiquantiles"></a>
+<div class="page-header"><h1 id="actiplot">actiplot<a class="anchor" aria-label="anchor" href="#actiplot"></a>
 </h1></div>
-<p><code>actiquantiles</code> maps physical activity values to NHANES-based quantiles. The package exposes an <code>acti_</code>-prefixed wrapper around <code>mapnhanespa::map_nhanes_pa_quantiles()</code> so the public API can stay stable while new mapping backends are added later.</p>
+<p><code>actiplot</code> provides <code>ggplot2</code> visualizations for minute-level activity data, including steps and activity counts. It works with the standardized timestamp conventions used throughout the activerse.</p>
 <p>Core entry points:</p>
 <ul>
 <li>
-<code>acti_map_nhanes()</code> for participant-level quantile mapping</li>
+<code><a href="reference/acti_plot_time.html">acti_plot_time()</a></code> for a complete activity time series</li>
 <li>
-<code>mapnhanespa::nhanes_pa_quantile()</code> for a single value lookup</li>
+<code><a href="reference/acti_plot_time.html">acti_plot_day()</a></code> for time-of-day-aligned daily rows</li>
 <li>
-<code>mapnhanespa::nhanes_pa_age_category()</code> for age binning</li>
+<code><a href="reference/acti_plot_time.html">acti_plot_heatmap()</a></code> for a date-by-time activity heat map</li>
 </ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install <code>actiquantiles</code> from GitHub with:</p>
+<p>You can install <code>actiplot</code> from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jhuwit/actiquantiles"</span><span class="op">)</span></span></code></pre></div>
-<p>The package depends on <code>mapnhanespa</code>, which provides the NHANES mapping tables and lookup logic.</p>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jhuwit/actiplot"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
-<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">62</span><span class="op">)</span>,</span>
-<span>  sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="st">"Male"</span><span class="op">)</span>,</span>
-<span>  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mims"</span>, <span class="st">"ssl_steps"</span><span class="op">)</span>,</span>
-<span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15000</span>, <span class="fl">7500</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">activity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2024-01-01"</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">60</span> <span class="op">*</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1439</span>,</span>
+<span>  steps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html" class="external-link">rpois</a></span><span class="op">(</span><span class="fl">1440</span>, lambda <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mapped</span> <span class="op">&lt;-</span> <span class="fu">acti_map_nhanes</span><span class="op">(</span><span class="va">example_data</span><span class="op">)</span></span>
-<span><span class="va">mapped</span></span>
-<span><span class="co">#&gt;   id age    sex   measure value acti_pa_quantile</span></span>
-<span><span class="co">#&gt; 1  A  25 Female      mims 15000        0.5349443</span></span>
-<span><span class="co">#&gt; 2  B  62   Male ssl_steps  7500        0.3527381</span></span></code></pre></div>
-<p>The wrapper keeps the input columns and adds <code>acti_pa_quantile</code>:</p>
+<span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">steps</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-1.png"><!-- --></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mapped</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   id age    sex   measure value acti_pa_quantile</span></span>
-<span><span class="co">#&gt; 1  A  25 Female      mims 15000        0.5349443</span></span>
-<span><span class="co">#&gt; 2  B  62   Male ssl_steps  7500        0.3527381</span></span></code></pre></div>
-<p>For a single value, use the scalar helper from <code>mapnhanespa</code> directly:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">mapnhanespa</span><span class="fu">::</span><span class="fu">nhanes_pa_quantile</span><span class="op">(</span></span>
-<span>  value <span class="op">=</span> <span class="fl">15000</span>,</span>
-<span>  age <span class="op">=</span> <span class="fl">25</span>,</span>
-<span>  sex <span class="op">=</span> <span class="st">"Female"</span>,</span>
-<span>  measure <span class="op">=</span> <span class="st">"mims"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.5349443</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">steps</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-2.png"><!-- --></p>
 </div>
 </div>
 
@@ -137,8 +118,8 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/jhuwit/actiquantiles/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jhuwit/actiquantiles/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/jhuwit/actiquantiles?branch=main" class="external-link"><img src="https://codecov.io/gh/jhuwit/actiquantiles/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/jhuwit/actiplot/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jhuwit/actiplot/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/jhuwit/actiplot?branch=main" class="external-link"><img src="https://codecov.io/gh/jhuwit/actiplot/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 

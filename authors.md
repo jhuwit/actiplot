@@ -10,11 +10,11 @@
 Source:
 [`DESCRIPTION`](https://github.com/jhuwit/actiplot/blob/main/DESCRIPTION)
 
-Muschelli J (2026). *actiplot: Plotting Methods for Activity Data*. R
+Muschelli J (2026). *actiplot: Plotting Minute-Level Activity Data*. R
 package version 0.1.0, <https://github.com/jhuwit/actiplot>.
 
     @Manual{,
-      title = {actiplot: Plotting Methods for Activity Data},
+      title = {actiplot: Plotting Minute-Level Activity Data},
       author = {John Muschelli},
       year = {2026},
       note = {R package version 0.1.0},
