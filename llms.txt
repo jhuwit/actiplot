@@ -27,19 +27,16 @@ remotes::install_github("jhuwit/actiplot")
 
 ``` r
 
-activity <- data.frame(
-  time = as.POSIXct("2024-01-01", tz = "UTC") + 60 * 0:1439,
-  steps = rpois(1440, lambda = 2)
-)
+activity <- acti_minute_data[seq_len(1440), ]
 
-acti_plot_time(activity, steps, breaks = "4 hours")
+acti_plot_time(activity, counts, breaks = "4 hours")
 ```
 
 ![](reference/figures/README-example-1.png)
 
 ``` r
 
-acti_plot_day(activity, steps, breaks = "4 hours")
+acti_plot_day(activity, counts, breaks = "4 hours")
 ```
 
 ![](reference/figures/README-example-2.png)
@@ -48,8 +45,16 @@ acti_plot_day(activity, steps, breaks = "4 hours")
 
 ## All functions
 
+- [`acti_minute_data`](https://jhuwit.github.io/actiplot/reference/acti_minute_data.md)
+  : Minute-level accelerometer counts
 - [`acti_plot_time()`](https://jhuwit.github.io/actiplot/reference/acti_plot_time.md)
   [`acti_plot_day()`](https://jhuwit.github.io/actiplot/reference/acti_plot_time.md)
   [`acti_plot_heatmap()`](https://jhuwit.github.io/actiplot/reference/acti_plot_time.md)
   : Plot minute-level activity over time
 
+# Articles
+
+### All vignettes
+
+- [Plotting Minute-Level Activity
+  Data](https://jhuwit.github.io/actiplot/articles/plot-minute-activity.md):

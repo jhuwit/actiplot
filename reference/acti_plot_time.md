@@ -56,12 +56,13 @@ and adds date and time-of-day variables.
 ## Examples
 
 ``` r
-activity <- data.frame(
-  time = as.POSIXct("2024-01-01", tz = "UTC") + 60 * 0:5,
-  steps = c(0, 12, 18, 4, 0, 9)
-)
-acti_plot_time(activity, steps)
+# The first two hours of the packaged minute-level data.
+activity <- acti_minute_data[seq_len(120), ]
 
-acti_plot_day(activity, "steps", breaks = "1 hour")
+acti_plot_time(activity, counts, breaks = "1 hour")
+
+acti_plot_day(activity, "counts", breaks = "1 hour")
+
+acti_plot_heatmap(activity, counts, breaks = "1 hour")
 
 ```

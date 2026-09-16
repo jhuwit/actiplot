@@ -27,19 +27,16 @@ remotes::install_github("jhuwit/actiplot")
 
 ``` r
 
-activity <- data.frame(
-  time = as.POSIXct("2024-01-01", tz = "UTC") + 60 * 0:1439,
-  steps = rpois(1440, lambda = 2)
-)
+activity <- acti_minute_data[seq_len(1440), ]
 
-acti_plot_time(activity, steps, breaks = "4 hours")
+acti_plot_time(activity, counts, breaks = "4 hours")
 ```
 
 ![](reference/figures/README-example-1.png)
 
 ``` r
 
-acti_plot_day(activity, steps, breaks = "4 hours")
+acti_plot_day(activity, counts, breaks = "4 hours")
 ```
 
 ![](reference/figures/README-example-2.png)
