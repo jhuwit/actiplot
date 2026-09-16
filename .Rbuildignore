@@ -11,7 +11,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^SummarizedActigraphy\.Rproj$
 ^README_cache$
 ^\.DS_Store$
 ^\.git$

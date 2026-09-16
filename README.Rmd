@@ -19,13 +19,15 @@ pkgload::load_all(".")
 
 # actiplot
 
-`actiplot` 
+`actiplot` provides `ggplot2` visualizations for minute-level activity data,
+including steps and activity counts. It works with the standardized timestamp
+conventions used throughout the activerse.
 
 Core entry points:
 
-- `acti_map_nhanes()` for participant-level quantile mapping
-- `mapnhanespa::nhanes_pa_quantile()` for a single value lookup
-- `mapnhanespa::nhanes_pa_age_category()` for age binning
+- `acti_plot_time()` for a complete activity time series
+- `acti_plot_day()` for time-of-day-aligned daily rows
+- `acti_plot_heatmap()` for a date-by-time activity heat map
 
 ## Installation
 
@@ -36,3 +38,14 @@ You can install `actiplot` from GitHub with:
 remotes::install_github("jhuwit/actiplot")
 ```
 
+## Quick start
+
+```{r example}
+activity <- data.frame(
+  time = as.POSIXct("2024-01-01", tz = "UTC") + 60 * 0:1439,
+  steps = rpois(1440, lambda = 2)
+)
+
+acti_plot_time(activity, steps, breaks = "4 hours")
+acti_plot_day(activity, steps, breaks = "4 hours")
+```

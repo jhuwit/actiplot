@@ -1,0 +1,162 @@
+#' Plot minute-level activity over time
+#'
+#' `acti_plot_time()` draws a time-series plot for a minute-level activity
+#' measure, such as steps or activity counts. `acti_plot_day()` aligns the data
+#' by time of day and places each date in its own facet row.
+#' `acti_plot_heatmap()` provides the same date-by-time layout as a heat map.
+#'
+#' Data are prepared with [actibase::acti_separate_times()], which recognizes
+#' the timestamp conventions used by activerse packages and adds date and
+#' time-of-day variables.
+#'
+#' @param data A data frame containing a timestamp and an activity measure.
+#' @param value The activity-measure column, supplied unquoted or as a string.
+#'   For example, `steps` or `"counts"`.
+#' @param time The timestamp column, supplied unquoted or as a string. It is
+#'   `time` by default.
+#' @param breaks A single duration such as `"1 hour"`, `"4 hours"`, or
+#'   `"15 mins"`. It controls x-axis spacing. Use `NULL` for ggplot2's
+#'   default on the full-time plot or no specified breaks on aligned plots.
+#' @param ... Additional arguments passed to the primary geom.
+#'
+#' @return A ggplot object.
+#' @examples
+#' activity <- data.frame(
+#'   time = as.POSIXct("2024-01-01", tz = "UTC") + 60 * 0:5,
+#'   steps = c(0, 12, 18, 4, 0, 9)
+#' )
+#' acti_plot_time(activity, steps)
+#' acti_plot_day(activity, "steps", breaks = "1 hour")
+#'
+#' @export
+acti_plot_time <- function(data, value, time = time, breaks = NULL, ...) {
+  value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
+  time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
+  prepared <- .acti_plot_prepare(data, value_name, time_name)
+
+  plot <- ggplot2::ggplot(
+    prepared,
+    ggplot2::aes(x = .data[["time"]], y = .data[[value_name]])
+  ) +
+    ggplot2::geom_line(...) +
+    ggplot2::labs(x = "Time", y = value_name)
+
+  if (!is.null(breaks)) {
+    .acti_plot_break_minutes(breaks)
+    plot <- plot + ggplot2::scale_x_datetime(date_breaks = breaks)
+  }
+  plot
+}
+
+#' @rdname acti_plot_time
+#' @export
+acti_plot_day <- function(data, value, time = time, breaks = "4 hours", ...) {
+  value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
+  time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
+  prepared <- .acti_plot_prepare(data, value_name, time_name)
+
+  plot <- ggplot2::ggplot(
+    prepared,
+    ggplot2::aes(x = .data[[".acti_minutes"]], y = .data[[value_name]])
+  ) +
+    ggplot2::geom_line(...) +
+    ggplot2::facet_grid(rows = ggplot2::vars(date)) +
+    ggplot2::labs(x = "Time of day", y = value_name)
+
+  .acti_plot_add_time_of_day_scale(plot, breaks)
+}
+
+#' @rdname acti_plot_time
+#' @export
+acti_plot_heatmap <- function(data, value, time = time, breaks = "4 hours", ...) {
+  value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
+  time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
+  prepared <- .acti_plot_prepare(data, value_name, time_name)
+
+  plot <- ggplot2::ggplot(
+    prepared,
+    ggplot2::aes(
+      x = .data[[".acti_minutes"]], y = .data[["date"]],
+      fill = .data[[value_name]]
+    )
+  ) +
+    ggplot2::geom_tile(...) +
+    ggplot2::labs(x = "Time of day", y = "Date", fill = value_name)
+
+  .acti_plot_add_time_of_day_scale(plot, breaks)
+}
+
+.acti_plot_prepare <- function(data, value, time) {
+  if (!is.data.frame(data)) {
+    stop("`data` must be a data frame.", call. = FALSE)
+  }
+  if (!value %in% names(data)) {
+    stop("`value` must name a column in `data`.", call. = FALSE)
+  }
+  if (!is.numeric(data[[value]])) {
+    stop("The `value` column must be numeric.", call. = FALSE)
+  }
+  if (!time %in% names(data)) {
+    stop("`time` must name a timestamp column in `data`.", call. = FALSE)
+  }
+
+  data[["time"]] <- data[[time]]
+  prepared <- actibase::acti_separate_times(data)
+  if (!inherits(prepared[["time"]], "POSIXt")) {
+    stop("The `time` column must be POSIXct or POSIXlt.", call. = FALSE)
+  }
+  prepared[[".acti_minutes"]] <- as.numeric(prepared[["minute"]]) / 60
+  prepared
+}
+
+.acti_plot_column_name <- function(column, argument) {
+  expression <- rlang::get_expr(column)
+  if (rlang::is_string(expression)) {
+    return(expression)
+  }
+  if (rlang::is_symbol(expression)) {
+    return(rlang::as_string(expression))
+  }
+  stop(sprintf("`%s` must be a column name or a single string.", argument), call. = FALSE)
+}
+
+.acti_plot_break_minutes <- function(breaks) {
+  if (!is.character(breaks) || length(breaks) != 1L || is.na(breaks)) {
+    stop("`breaks` must be NULL or a duration such as `\"1 hour\"`.", call. = FALSE)
+  }
+  match <- regexec(
+    "^\\s*([0-9]+(?:\\.[0-9]+)?)\\s*(hours?|hrs?|minutes?|mins?)\\s*$",
+    breaks, ignore.case = TRUE
+  )
+  parts <- regmatches(breaks, match)[[1L]]
+  if (length(parts) == 0L) {
+    stop("`breaks` must be a duration such as `\"1 hour\"` or `\"15 mins\"`.", call. = FALSE)
+  }
+  amount <- as.numeric(parts[2L])
+  multiplier <- if (grepl("^h", parts[3L], ignore.case = TRUE)) 60 else 1
+  minutes <- amount * multiplier
+  if (!is.finite(minutes) || minutes <= 0 || minutes > 1440) {
+    stop("`breaks` must be greater than zero and no more than 24 hours.", call. = FALSE)
+  }
+  minutes
+}
+
+.acti_plot_add_time_of_day_scale <- function(plot, breaks) {
+  if (is.null(breaks)) {
+    return(plot + ggplot2::scale_x_continuous(limits = c(0, 1440)))
+  }
+  interval <- .acti_plot_break_minutes(breaks)
+  positions <- seq(0, 1440, by = interval)
+  plot + ggplot2::scale_x_continuous(
+    limits = c(0, 1440),
+    breaks = positions,
+    labels = .acti_plot_time_labels(positions),
+    expand = ggplot2::expansion(mult = 0)
+  )
+}
+
+.acti_plot_time_labels <- function(minutes) {
+  hours <- floor(minutes / 60)
+  mins <- round(minutes %% 60)
+  sprintf("%02d:%02d", hours, mins)
+}

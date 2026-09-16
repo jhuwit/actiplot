@@ -3,71 +3,47 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/jhuwit/actiquantiles/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/actiquantiles/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/jhuwit/actiplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/actiplot/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/jhuwit/actiquantiles/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jhuwit/actiquantiles?branch=main)
+coverage](https://codecov.io/gh/jhuwit/actiplot/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jhuwit/actiplot?branch=main)
 <!-- badges: end -->
 
-# actiquantiles
+# actiplot
 
-`actiquantiles` maps physical activity values to NHANES-based quantiles.
-The package exposes an `acti_`-prefixed wrapper around
-`mapnhanespa::map_nhanes_pa_quantiles()` so the public API can stay
-stable while new mapping backends are added later.
+`actiplot` provides `ggplot2` visualizations for minute-level activity
+data, including steps and activity counts. It works with the
+standardized timestamp conventions used throughout the activerse.
 
 Core entry points:
 
-- `acti_map_nhanes()` for participant-level quantile mapping
-- `mapnhanespa::nhanes_pa_quantile()` for a single value lookup
-- `mapnhanespa::nhanes_pa_age_category()` for age binning
+- `acti_plot_time()` for a complete activity time series
+- `acti_plot_day()` for time-of-day-aligned daily rows
+- `acti_plot_heatmap()` for a date-by-time activity heat map
 
 ## Installation
 
-You can install `actiquantiles` from GitHub with:
+You can install `actiplot` from GitHub with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("jhuwit/actiquantiles")
+remotes::install_github("jhuwit/actiplot")
 ```
 
-The package depends on `mapnhanespa`, which provides the NHANES mapping
-tables and lookup logic.
-
-## Quick Start
+## Quick start
 
 ``` r
-example_data <- data.frame(
-  id = c("A", "B"),
-  age = c(25, 62),
-  sex = c("Female", "Male"),
-  measure = c("mims", "ssl_steps"),
-  value = c(15000, 7500)
+activity <- data.frame(
+  time = as.POSIXct("2024-01-01", tz = "UTC") + 60 * 0:1439,
+  steps = rpois(1440, lambda = 2)
 )
 
-mapped <- acti_map_nhanes(example_data)
-mapped
-#>   id age    sex   measure value acti_pa_quantile
-#> 1  A  25 Female      mims 15000        0.5349443
-#> 2  B  62   Male ssl_steps  7500        0.3527381
+acti_plot_time(activity, steps, breaks = "4 hours")
 ```
 
-The wrapper keeps the input columns and adds `acti_pa_quantile`:
+![](man/figures/README-example-1.png)<!-- -->
 
 ``` r
-head(mapped)
-#>   id age    sex   measure value acti_pa_quantile
-#> 1  A  25 Female      mims 15000        0.5349443
-#> 2  B  62   Male ssl_steps  7500        0.3527381
+acti_plot_day(activity, steps, breaks = "4 hours")
 ```
 
-For a single value, use the scalar helper from `mapnhanespa` directly:
-
-``` r
-mapnhanespa::nhanes_pa_quantile(
-  value = 15000,
-  age = 25,
-  sex = "Female",
-  measure = "mims"
-)
-#> [1] 0.5349443
-```
+![](man/figures/README-example-2.png)<!-- -->
