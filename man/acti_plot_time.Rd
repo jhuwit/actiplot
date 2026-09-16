@@ -40,7 +40,7 @@ For example, \code{steps} or \code{"counts"}.}
 default on the full-time plot or no specified breaks on aligned plots.}
 
 \item{x_axis}{The x-axis labelling scheme for \code{acti_plot_time()}. Use
-\code{"default"} to use \code{breaks} or ggplot2's default; \code{"12 hours"} to show
+\code{"default"} to use \code{breaks} or \code{ggplot2}'s default; \code{"12 hours"} to show
 a date and 12-hour clock label every 12 hours; or \code{"midnight"} to label
 each date only at midnight. The latter two options set their own breaks.}
 

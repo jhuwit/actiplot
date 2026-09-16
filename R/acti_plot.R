@@ -18,7 +18,7 @@
 #'   `"15 mins"`. It controls x-axis spacing. Use `NULL` for ggplot2's
 #'   default on the full-time plot or no specified breaks on aligned plots.
 #' @param x_axis The x-axis labelling scheme for `acti_plot_time()`. Use
-#'   `"default"` to use `breaks` or ggplot2's default; `"12 hours"` to show
+#'   `"default"` to use `breaks` or `ggplot2`'s default; `"12 hours"` to show
 #'   a date and 12-hour clock label every 12 hours; or `"midnight"` to label
 #'   each date only at midnight. The latter two options set their own breaks.
 #' @param facet The facet labels for `acti_plot_day()`: `"date"` for the full
