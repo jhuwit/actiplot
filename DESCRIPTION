@@ -1,0 +1,28 @@
+Type: Package
+Package: actiplot
+Title: Plotting Methods for Activity Data
+Version: 0.1.0
+Authors@R: c(
+    person(given = "John",
+           family = "Muschelli",
+           role = c("aut", "cre"),
+           email = "muschellij2@gmail.com",
+           comment = c(ORCID = "0000-0001-6469-1750"))
+    )
+Description: Provides functions for plotting activity data and other time series.
+License: GPL-3
+Depends: 
+    R (>= 3.5)
+Suggests:
+    testthat,
+    covr,
+    knitr,
+    rmarkdown,
+    dplyr
+Encoding: UTF-8
+Imports: 
+    mapnhanespa
+LazyData: true
+Config/roxygen2/version: 8.0.0
+URL: https://github.com/jhuwit/actiplot, https://jhuwit.github.io/actiplot/
+BugReports: https://github.com/jhuwit/actiplot/issues

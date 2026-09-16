@@ -1,0 +1,38 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jhuwit/actiplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/actiplot/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/jhuwit/actiplot/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jhuwit/actiplot?branch=main)
+<!-- badges: end -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+pkgload::load_all(".")
+```
+
+# actiplot
+
+`actiplot` 
+
+Core entry points:
+
+- `acti_map_nhanes()` for participant-level quantile mapping
+- `mapnhanespa::nhanes_pa_quantile()` for a single value lookup
+- `mapnhanespa::nhanes_pa_age_category()` for age binning
+
+## Installation
+
+You can install `actiplot` from GitHub with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("jhuwit/actiplot")
+```
+
