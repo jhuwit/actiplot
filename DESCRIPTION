@@ -20,8 +20,6 @@ Suggests:
     rmarkdown,
     dplyr
 Encoding: UTF-8
-Imports: 
-    mapnhanespa
 LazyData: true
 Config/roxygen2/version: 8.0.0
 URL: https://github.com/jhuwit/actiplot, https://jhuwit.github.io/actiplot/
