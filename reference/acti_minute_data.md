@@ -41,8 +41,7 @@ A tibble with 10,080 rows and 7 variables:
 
 ## Source
 
-The [Figshare
-collection](https://springernature.figshare.com/collections/Upper_limb_activity_of_twenty_myoelectric_prosthesis_users_and_twenty_healthy_anatomically_intact_adults_/4457855).
+The Figshare collection at <doi:10.6084/m9.figshare.c.4457855>.
 
 ## Details
 
@@ -56,4 +55,4 @@ from that collection.
 Chadwell, A., Kenney, L., Granat, M., Thies, S., Galpin, A., & Head, J.
 (2019). Upper limb activity of twenty myoelectric prosthesis users and
 twenty healthy anatomically intact adults. *Scientific Data*, 6, 199.
-<https://doi.org/10.1038/s41597-019-0211-6>
+<doi:10.1038/s41597-019-0211-6>
