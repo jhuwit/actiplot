@@ -41,6 +41,7 @@
 #' @export
 acti_plot_time <- function(data, value, time = time, breaks = NULL,
                            x_axis = c("default", "12 hours", "midnight"), ...) {
+  .acti_plot_check_value(value)
   value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
   time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
   x_axis <- match.arg(x_axis)
@@ -78,6 +79,7 @@ acti_plot_time <- function(data, value, time = time, breaks = NULL,
 #' @export
 acti_plot_day <- function(data, value, time = time, breaks = "4 hours",
                           facet = c("date", "month-day", "day"), ...) {
+  .acti_plot_check_value(value)
   value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
   time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
   facet <- match.arg(facet)
@@ -100,6 +102,7 @@ acti_plot_day <- function(data, value, time = time, breaks = "4 hours",
 #' @rdname acti_plot_time
 #' @export
 acti_plot_heatmap <- function(data, value, time = time, breaks = "4 hours", ...) {
+  .acti_plot_check_value(value)
   value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
   time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
   prepared <- .acti_plot_prepare(data, value_name, time_name)
@@ -140,6 +143,12 @@ acti_plot_heatmap <- function(data, value, time = time, breaks = "4 hours", ...)
   prepared <- actibase::acti_separate_times(data)
   prepared[[".acti_minutes"]] <- as.numeric(prepared[["minute"]]) / 60
   prepared
+}
+
+.acti_plot_check_value <- function(value) {
+  if (missing(value)) {
+    stop("`value` is required; supply the steps or counts column, for example `value = counts`.", call. = FALSE)
+  }
 }
 
 .acti_plot_column_name <- function(column, argument) {

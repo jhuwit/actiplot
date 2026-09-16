@@ -49,6 +49,9 @@ test_that("column selection, input types, and breaks are validated", {
   )
 
   expect_error(acti_plot_time(1, steps), "must be a data frame")
+  expect_error(acti_plot_time(data), "`value` is required")
+  expect_error(acti_plot_day(data), "`value` is required")
+  expect_error(acti_plot_heatmap(data), "`value` is required")
   expect_error(acti_plot_time(data, missing), "must name a column")
   expect_error(acti_plot_time(transform(data, steps = as.character(steps)), steps), "must be numeric")
   expect_error(acti_plot_time(data, steps, time = missing), "must name a timestamp")

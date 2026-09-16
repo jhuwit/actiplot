@@ -31,6 +31,7 @@ BugReports: https://github.com/jhuwit/actiplot/issues
 Imports:
     actibase,
     ggplot2,
+    hms,
     rlang
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3

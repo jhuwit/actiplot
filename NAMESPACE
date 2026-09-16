@@ -3,4 +3,5 @@
 export(acti_plot_day)
 export(acti_plot_heatmap)
 export(acti_plot_time)
+export(geom_time_vline)
 importFrom(rlang,.data)
