@@ -21,12 +21,12 @@
 #'
 #' @return A ggplot object.
 #' @examples
-#' activity <- data.frame(
-#'   time = as.POSIXct("2024-01-01", tz = "UTC") + 60 * 0:5,
-#'   steps = c(0, 12, 18, 4, 0, 9)
-#' )
-#' acti_plot_time(activity, steps)
-#' acti_plot_day(activity, "steps", breaks = "1 hour")
+#' # The first two hours of the packaged minute-level data.
+#' activity <- acti_minute_data[seq_len(120), ]
+#'
+#' acti_plot_time(activity, counts, breaks = "1 hour")
+#' acti_plot_day(activity, "counts", breaks = "1 hour")
+#' acti_plot_heatmap(activity, counts, breaks = "1 hour")
 #'
 #' @export
 acti_plot_time <- function(data, value, time = time, breaks = NULL, ...) {
@@ -63,7 +63,9 @@ acti_plot_day <- function(data, value, time = time, breaks = "4 hours", ...) {
     ggplot2::facet_grid(rows = ggplot2::vars(date)) +
     ggplot2::labs(x = "Time of day", y = value_name)
 
-  .acti_plot_add_time_of_day_scale(plot, breaks)
+  .acti_plot_add_time_of_day_scale(
+    plot, breaks, range(prepared[[".acti_minutes"]], na.rm = TRUE)
+  )
 }
 
 #' @rdname acti_plot_time
@@ -83,7 +85,9 @@ acti_plot_heatmap <- function(data, value, time = time, breaks = "4 hours", ...)
     ggplot2::geom_tile(...) +
     ggplot2::labs(x = "Time of day", y = "Date", fill = value_name)
 
-  .acti_plot_add_time_of_day_scale(plot, breaks)
+  .acti_plot_add_time_of_day_scale(
+    plot, breaks, range(prepared[[".acti_minutes"]], na.rm = TRUE)
+  )
 }
 
 .acti_plot_prepare <- function(data, value, time) {
@@ -99,12 +103,12 @@ acti_plot_heatmap <- function(data, value, time = time, breaks = "4 hours", ...)
   if (!time %in% names(data)) {
     stop("`time` must name a timestamp column in `data`.", call. = FALSE)
   }
+  if (!inherits(data[[time]], "POSIXt")) {
+    stop("The `time` column must be POSIXct or POSIXlt.", call. = FALSE)
+  }
 
   data[["time"]] <- data[[time]]
   prepared <- actibase::acti_separate_times(data)
-  if (!inherits(prepared[["time"]], "POSIXt")) {
-    stop("The `time` column must be POSIXct or POSIXlt.", call. = FALSE)
-  }
   prepared[[".acti_minutes"]] <- as.numeric(prepared[["minute"]]) / 60
   prepared
 }
@@ -141,18 +145,24 @@ acti_plot_heatmap <- function(data, value, time = time, breaks = "4 hours", ...)
   minutes
 }
 
-.acti_plot_add_time_of_day_scale <- function(plot, breaks) {
+.acti_plot_add_time_of_day_scale <- function(plot, breaks, limits) {
   if (is.null(breaks)) {
-    return(plot + ggplot2::scale_x_continuous(limits = c(0, 1440)))
+    return(
+      plot +
+        ggplot2::scale_x_continuous() +
+        ggplot2::coord_cartesian(xlim = limits)
+    )
   }
   interval <- .acti_plot_break_minutes(breaks)
-  positions <- seq(0, 1440, by = interval)
+  first_break <- floor(limits[1L] / interval) * interval
+  last_break <- ceiling(limits[2L] / interval) * interval
+  positions <- seq(first_break, last_break, by = interval)
   plot + ggplot2::scale_x_continuous(
-    limits = c(0, 1440),
     breaks = positions,
     labels = .acti_plot_time_labels(positions),
     expand = ggplot2::expansion(mult = 0)
-  )
+  ) +
+    ggplot2::coord_cartesian(xlim = limits)
 }
 
 .acti_plot_time_labels <- function(minutes) {

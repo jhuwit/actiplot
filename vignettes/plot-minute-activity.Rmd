@@ -1,0 +1,54 @@
+---
+title: "Plotting Minute-Level Activity Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Plotting Minute-Level Activity Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(actiplot)
+```
+
+This vignette uses the packaged `acti_minute_data` accelerometer recording.
+It contains seven days of minute-level vector-magnitude activity counts.
+
+```{r data}
+activity <- acti_minute_data
+```
+
+## Complete recording
+
+Use `acti_plot_time()` to inspect activity across the entire recording. The
+`breaks` argument accepts ordinary duration strings and sets the interval of
+the time-axis labels.
+
+```{r full-time}
+acti_plot_time(activity, counts, breaks = "4 hours")
+```
+
+## Daily aligned rows
+
+Use `acti_plot_day()` to align each day on the same time-of-day axis. Each
+facet row is one calendar date, which makes day-to-day activity patterns easy
+to compare.
+
+```{r daily}
+acti_plot_day(activity, counts, breaks = "4 hours")
+```
+
+## Date-by-time heat map
+
+`acti_plot_heatmap()` uses the same alignment with counts represented by fill.
+
+```{r heatmap}
+acti_plot_heatmap(activity, counts, breaks = "4 hours")
+```

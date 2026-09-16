@@ -25,3 +25,5 @@
 ^\.claude$
 ^actiplot\.Rproj$
 ^CRAN-SUBMISSION$
+^doc$
+^Meta$
