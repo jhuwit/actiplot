@@ -55,7 +55,7 @@ acti_plot_heatmap(data, value, time = time, breaks = "4 hours", ...)
 - x_axis:
 
   The x-axis labelling scheme for `acti_plot_time()`. Use `"default"` to
-  use `breaks` or ggplot2's default; `"12 hours"` to show a date and
+  use `breaks` or `ggplot2`'s default; `"12 hours"` to show a date and
   12-hour clock label every 12 hours; or `"midnight"` to label each date
   only at midnight. The latter two options set their own breaks.
 
