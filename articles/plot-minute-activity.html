@@ -82,17 +82,17 @@ entire recording. The <code>breaks</code> argument accepts ordinary
 duration strings and sets the interval of the time-axis labels.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot-minute-activity_files/figure-html/full-time-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="plot-minute-activity_files/figure-html/full-time-1.png" class="r-plt" alt="" width="100%"></p>
 <p>For a more legible complete-recording axis, set
 <code>x_axis = "12 hours"</code>. It shows date and 12-hour-clock labels
 at midnight and noon. Alternatively, <code>x_axis = "midnight"</code>
 prints just the date at midnight, without <code>00:00:00</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, x_axis <span class="op">=</span> <span class="st">"12 hours"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot-minute-activity_files/figure-html/full-time-readable-axis-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="plot-minute-activity_files/figure-html/full-time-readable-axis-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, x_axis <span class="op">=</span> <span class="st">"midnight"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot-minute-activity_files/figure-html/full-time-readable-axis-2.png" class="r-plt" alt="" width="700"></p>
+<p><img src="plot-minute-activity_files/figure-html/full-time-readable-axis-2.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="daily-aligned-rows">Daily aligned rows<a class="anchor" aria-label="anchor" href="#daily-aligned-rows"></a>
@@ -102,16 +102,16 @@ time-of-day axis. Each facet row is one calendar date, which makes
 day-to-day activity patterns easy to compare.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot-minute-activity_files/figure-html/daily-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="plot-minute-activity_files/figure-html/daily-1.png" class="r-plt" alt="" width="100%"></p>
 <p>Set <code>facet = "month-day"</code> to remove the year from date
 strips, or <code>facet = "day"</code> to use the baseline-relative day
 calculated by <code><a href="https://jhuwit.github.io/actibase/reference/acti_separate_time.html" class="external-link">actibase::acti_separate_times()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, facet <span class="op">=</span> <span class="st">"month-day"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot-minute-activity_files/figure-html/daily-facet-labels-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="plot-minute-activity_files/figure-html/daily-facet-labels-1.png" class="r-plt" alt="" width="100%"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_day</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, facet <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot-minute-activity_files/figure-html/daily-facet-labels-2.png" class="r-plt" alt="" width="700"></p>
+<p><img src="plot-minute-activity_files/figure-html/daily-facet-labels-2.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="date-by-time-heat-map">Date-by-time heat map<a class="anchor" aria-label="anchor" href="#date-by-time-heat-map"></a>
@@ -120,7 +120,49 @@ calculated by <code><a href="https://jhuwit.github.io/actibase/reference/acti_se
 represented by fill.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_heatmap</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plot-minute-activity_files/figure-html/heatmap-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="plot-minute-activity_files/figure-html/heatmap-1.png" class="r-plt" alt="" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="actogram-and-daily-profile">Actogram and daily profile<a class="anchor" aria-label="anchor" href="#actogram-and-daily-profile"></a>
+</h2>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_actogram.html">acti_plot_actogram</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, breaks <span class="op">=</span> <span class="st">"4 hours"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/actogram-1.png" class="r-plt" alt="" width="100%"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_minute_profile.html">acti_plot_minute_profile</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span>, summary <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/minute-profile-1.png" class="r-plt" alt="" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="interval-annotations">Interval annotations<a class="anchor" aria-label="anchor" href="#interval-annotations"></a>
+</h2>
+<p>Episode layers use an explicit interval table with POSIXct start and
+end columns. The example creates deterministic nightly windows for
+illustration.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sleep_windows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2017-06-03 22:00:00"</span>, <span class="st">"2017-06-04 22:00:00"</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>,</span>
+<span>  end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2017-06-04 07:00:00"</span>, <span class="st">"2017-06-05 07:00:00"</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_sleep_window.html">geom_sleep_window</a></span><span class="op">(</span><span class="va">sleep_windows</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_day_boundary.html">geom_day_boundary</a></span><span class="op">(</span><span class="st">"noon"</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/intervals-1.png" class="r-plt" alt="" width="100%"></p>
+<p>The same interval schema supports generic episodes and wear
+annotations.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_episode.html">geom_episode</a></span><span class="op">(</span><span class="va">sleep_windows</span>, fill <span class="op">=</span> <span class="st">"grey30"</span>, alpha <span class="op">=</span> <span class="fl">0.10</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_wear.html">geom_wear</a></span><span class="op">(</span><span class="va">sleep_windows</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/episode-and-wear-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Additional lightweight annotations can mark selected activity and
+intensity.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/acti_plot_time.html">acti_plot_time</a></span><span class="op">(</span><span class="va">activity</span>, <span class="va">counts</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_activity_rug.html">geom_activity_rug</a></span><span class="op">(</span><span class="va">activity</span><span class="op">[</span><span class="va">activity</span><span class="op">$</span><span class="va">counts</span> <span class="op">&gt;</span> <span class="fl">10000</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_threshold_band.html">geom_threshold_band</a></span><span class="op">(</span><span class="va">activity</span>, <span class="st">"counts"</span>, threshold <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_time_vline.html">geom_time_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="st">"12:00:00"</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="plot-minute-activity_files/figure-html/rug-threshold-vline-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

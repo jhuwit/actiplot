@@ -94,3 +94,63 @@ acti_plot_heatmap(activity, counts, breaks = "4 hours")
 ```
 
 ![](plot-minute-activity_files/figure-html/heatmap-1.png)
+
+## Actogram and daily profile
+
+``` r
+
+acti_plot_actogram(activity, counts, breaks = "4 hours")
+```
+
+![](plot-minute-activity_files/figure-html/actogram-1.png)
+
+``` r
+
+acti_plot_minute_profile(activity, counts, summary = "median")
+```
+
+![](plot-minute-activity_files/figure-html/minute-profile-1.png)
+
+## Interval annotations
+
+Episode layers use an explicit interval table with POSIXct start and end
+columns. The example creates deterministic nightly windows for
+illustration.
+
+``` r
+
+sleep_windows <- data.frame(
+  start = as.POSIXct(c("2017-06-03 22:00:00", "2017-06-04 22:00:00"), tz = "GMT"),
+  end = as.POSIXct(c("2017-06-04 07:00:00", "2017-06-05 07:00:00"), tz = "GMT")
+)
+
+acti_plot_time(activity, counts) +
+  geom_sleep_window(sleep_windows) +
+  geom_day_boundary("noon", linetype = "dashed")
+```
+
+![](plot-minute-activity_files/figure-html/intervals-1.png)
+
+The same interval schema supports generic episodes and wear annotations.
+
+``` r
+
+acti_plot_time(activity, counts) +
+  geom_episode(sleep_windows, fill = "grey30", alpha = 0.10) +
+  geom_wear(sleep_windows)
+```
+
+![](plot-minute-activity_files/figure-html/episode-and-wear-1.png)
+
+Additional lightweight annotations can mark selected activity and
+intensity.
+
+``` r
+
+acti_plot_time(activity, counts) +
+  geom_activity_rug(activity[activity$counts > 10000, ]) +
+  geom_threshold_band(activity, "counts", threshold = 10000) +
+  geom_time_vline(xintercept = "12:00:00", linetype = "dotted")
+```
+
+![](plot-minute-activity_files/figure-html/rug-threshold-vline-1.png)

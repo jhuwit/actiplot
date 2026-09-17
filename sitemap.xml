@@ -6,9 +6,17 @@
 <url><loc>https://jhuwit.github.io/actiplot/index.html</loc></url>
 <url><loc>https://jhuwit.github.io/actiplot/news/index.html</loc></url>
 <url><loc>https://jhuwit.github.io/actiplot/reference/acti_minute_data.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/acti_plot_actogram.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/acti_plot_minute_profile.html</loc></url>
 <url><loc>https://jhuwit.github.io/actiplot/reference/acti_plot_time.html</loc></url>
 <url><loc>https://jhuwit.github.io/actiplot/reference/actiplot-package.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/geom_activity_rug.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/geom_day_boundary.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/geom_episode.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/geom_sleep_window.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/geom_threshold_band.html</loc></url>
 <url><loc>https://jhuwit.github.io/actiplot/reference/geom_time_vline.html</loc></url>
+<url><loc>https://jhuwit.github.io/actiplot/reference/geom_wear.html</loc></url>
 <url><loc>https://jhuwit.github.io/actiplot/reference/index.html</loc></url>
 </urlset>
 
