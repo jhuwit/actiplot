@@ -8,13 +8,13 @@ standardized timestamp conventions used throughout the activerse.
 
 `acti_minute_data` is a processed minute-level recording drawn from the
 [Figshare collection of upper-limb activity
-data](https://springernature.figshare.com/collections/Upper_limb_activity_of_twenty_myoelectric_prosthesis_users_and_twenty_healthy_anatomically_intact_adults_/4457855)
-from 20 myoelectric prosthesis users and 20 anatomically intact adults.
-Please cite the original data descriptor when using it: Chadwell A,
-Kenney L, Granat M, Thies S, Galpin A, and Head J (2019), [*Upper limb
-activity of twenty myoelectric prosthesis users and twenty healthy
-anatomically intact adults*](https://doi.org/10.1038/s41597-019-0211-6),
-*Scientific Data* 6, 199.
+data](https://doi.org/10.6084/m9.figshare.c.4457855) from 20 myoelectric
+prosthesis users and 20 anatomically intact adults. Please cite the
+original data descriptor when using it: Chadwell A, Kenney L, Granat M,
+Thies S, Galpin A, and Head J (2019), [*Upper limb activity of twenty
+myoelectric prosthesis users and twenty healthy anatomically intact
+adults*](https://doi.org/10.1038/s41597-019-0211-6), *Scientific Data*
+6, 199.
 
 Core entry points:
 
