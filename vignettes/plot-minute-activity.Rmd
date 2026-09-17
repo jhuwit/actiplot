@@ -24,7 +24,7 @@ library(actiplot)
 This vignette uses the packaged `acti_minute_data` accelerometer recording.
 It contains seven days of minute-level vector-magnitude activity counts.
 It is processed from the [upper-limb activity Figshare
-collection](https://springernature.figshare.com/collections/Upper_limb_activity_of_twenty_myoelectric_prosthesis_users_and_twenty_healthy_anatomically_intact_adults_/4457855)
+collection](https://doi.org/10.6084/m9.figshare.c.4457855)
 described by [Chadwell et al. (2019)](https://doi.org/10.1038/s41597-019-0211-6).
 
 ```{r data}
