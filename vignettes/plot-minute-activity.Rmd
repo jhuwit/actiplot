@@ -10,7 +10,10 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 14,
+  fig.height = 7,
+  out.width = "100%"
 )
 ```
 
@@ -53,7 +56,7 @@ Use `acti_plot_day()` to align each day on the same time-of-day axis. Each
 facet row is one calendar date, which makes day-to-day activity patterns easy
 to compare.
 
-```{r daily}
+```{r daily, fig.height=12}
 acti_plot_day(activity, counts, breaks = "4 hours")
 ```
 
@@ -61,7 +64,7 @@ Set `facet = "month-day"` to remove the year from date strips, or
 `facet = "day"` to use the baseline-relative day calculated by
 `actibase::acti_separate_times()`.
 
-```{r daily-facet-labels}
+```{r daily-facet-labels, fig.height=12}
 acti_plot_day(activity, counts, facet = "month-day")
 acti_plot_day(activity, counts, facet = "day")
 ```
@@ -70,8 +73,18 @@ acti_plot_day(activity, counts, facet = "day")
 
 `acti_plot_heatmap()` uses the same alignment with counts represented by fill.
 
-```{r heatmap}
+```{r heatmap, fig.height=9}
 acti_plot_heatmap(activity, counts, breaks = "4 hours")
+```
+
+## Actogram and daily profile
+
+```{r actogram, fig.height=9}
+acti_plot_actogram(activity, counts, breaks = "4 hours")
+```
+
+```{r minute-profile}
+acti_plot_minute_profile(activity, counts, summary = "median")
 ```
 
 ## Interval annotations
@@ -88,4 +101,21 @@ sleep_windows <- data.frame(
 acti_plot_time(activity, counts) +
   geom_sleep_window(sleep_windows) +
   geom_day_boundary("noon", linetype = "dashed")
+```
+
+The same interval schema supports generic episodes and wear annotations.
+
+```{r episode-and-wear}
+acti_plot_time(activity, counts) +
+  geom_episode(sleep_windows, fill = "grey30", alpha = 0.10) +
+  geom_wear(sleep_windows)
+```
+
+Additional lightweight annotations can mark selected activity and intensity.
+
+```{r rug-threshold-vline}
+acti_plot_time(activity, counts) +
+  geom_activity_rug(activity[activity$counts > 10000, ]) +
+  geom_threshold_band(activity, "counts", threshold = 10000) +
+  geom_time_vline(xintercept = "12:00:00", linetype = "dotted")
 ```
