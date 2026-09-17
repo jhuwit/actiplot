@@ -73,3 +73,19 @@ acti_plot_day(activity, counts, facet = "day")
 ```{r heatmap}
 acti_plot_heatmap(activity, counts, breaks = "4 hours")
 ```
+
+## Interval annotations
+
+Episode layers use an explicit interval table with POSIXct start and end
+columns. The example creates deterministic nightly windows for illustration.
+
+```{r intervals}
+sleep_windows <- data.frame(
+  start = as.POSIXct(c("2017-06-03 22:00:00", "2017-06-04 22:00:00"), tz = "GMT"),
+  end = as.POSIXct(c("2017-06-04 07:00:00", "2017-06-05 07:00:00"), tz = "GMT")
+)
+
+acti_plot_time(activity, counts) +
+  geom_sleep_window(sleep_windows) +
+  geom_day_boundary("noon", linetype = "dashed")
+```
