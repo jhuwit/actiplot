@@ -29,10 +29,12 @@ Config/roxygen2/version: 8.0.0
 URL: https://github.com/jhuwit/actiplot, https://jhuwit.github.io/actiplot/
 BugReports: https://github.com/jhuwit/actiplot/issues
 Imports:
-    actibase,
+    actibase (>= 0.6.0),
     ggplot2,
     hms,
     rlang
+Remotes:
+    jhuwit/actibase
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
