@@ -21,6 +21,10 @@
 #'   `"default"` to use `breaks` or `ggplot2`'s default; `"12 hours"` to show
 #'   a date and 12-hour clock label every 12 hours; or `"midnight"` to label
 #'   each date only at midnight. The latter two options set their own breaks.
+#' @param facet The facet labels for `acti_plot_day()`: `"date"` for the full
+#'   date, `"month-day"` for a date without the year, or `"day"` for days
+#'   since the first recording day (as calculated by
+#'   [actibase::acti_separate_times()]).
 #' @param ... Additional arguments passed to the primary geom.
 #' @param connector Should a `geom_step` (`step`) or `geom_line`
 #'   (`linear`/`line`) be used to connect points?

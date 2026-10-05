@@ -50,6 +50,11 @@ a date and 12-hour clock label every 12 hours; or \code{"midnight"} to label
 each date only at midnight. The latter two options set their own breaks.}
 
 \item{...}{Additional arguments passed to the primary geom.}
+
+\item{facet}{The facet labels for \code{acti_plot_day()}: \code{"date"} for the full
+date, \code{"month-day"} for a date without the year, or \code{"day"} for days
+since the first recording day (as calculated by
+\code{\link[actibase:acti_separate_times]{actibase::acti_separate_times()}}).}
 }
 \value{
 A ggplot object.
