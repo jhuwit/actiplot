@@ -42,6 +42,27 @@ test_that("time-only lines repeat for every date on full-time plots", {
   expect_equal(diff(lines$xintercept), 24 * 60 * 60)
 })
 
+test_that("full-time midnight lines use local time and stay within the data", {
+  data <- data.frame(
+    time = seq(
+      as.POSIXct("2013-06-10 19:30:00", tz = "Europe/London"),
+      as.POSIXct("2013-06-11 07:28:00", tz = "Europe/London"),
+      by = "min"
+    ),
+    counts = 0
+  )
+  plot <- acti_plot_time(data, counts, connector = "step") +
+    geom_time_vline("00:00", timezone = "Europe/London")
+  built <- ggplot2::ggplot_build(plot)
+
+  expect_equal(
+    built$data[[2]]$xintercept,
+    as.numeric(as.POSIXct("2013-06-11 00:00:00", tz = "Europe/London"))
+  )
+  expect_true(built$layout$panel_params[[1]]$x.range[1L] >
+                as.numeric(as.POSIXct("2013-06-10 00:00:00", tz = "Europe/London")))
+})
+
 test_that("time layer validates and parses inputs", {
   expect_error(geom_time_vline(), "'xintercept' is required")
   expect_error(ggplot2::ggplot_build(acti_plot_time(acti_minute_data, counts) + geom_time_vline(NA_character_)), "non-missing")

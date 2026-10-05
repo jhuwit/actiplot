@@ -16,11 +16,11 @@
   ) / 60
 }
 
-.acti_time_repeat_daily <- function(seconds, time) {
-  timezone <- .acti_time_zone(time)
+.acti_time_repeat_daily <- function(seconds, time, timezone = .acti_time_zone(time)) {
   dates <- seq(min(as.Date(time, tz = timezone)),
                max(as.Date(time, tz = timezone)), by = "day")
-  as.numeric(as.POSIXct(dates, tz = timezone)) + seconds
+  local_midnight <- as.POSIXct(paste(dates, "00:00:00"), tz = timezone)
+  as.numeric(local_midnight) + seconds
 }
 
 .acti_time_parse_intercept <- function(xintercept, timezone, check_timezone,

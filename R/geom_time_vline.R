@@ -71,9 +71,9 @@ StatTimeVline <- ggplot2::ggproto(
       intercept <- if (is_day_plot) {
         parsed$value / 60
       } else {
-        as.numeric(actibase::acti_repeat_time_of_day(
-          parsed$value, data[["time"]], timezone = timezone
-        ))
+        repeated <- .acti_time_repeat_daily(parsed$value, data[["time"]], timezone)
+        data_range <- range(as.numeric(data[["time"]]), na.rm = TRUE)
+        repeated[repeated >= data_range[1L] & repeated <= data_range[2L]]
       }
       return(data.frame(xintercept = intercept))
     }
