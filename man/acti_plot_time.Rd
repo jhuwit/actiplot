@@ -11,6 +11,7 @@ acti_plot_time(
   value,
   time = time,
   breaks = NULL,
+  connector = c("linear", "step", "line"),
   x_axis = c("default", "12 hours", "midnight"),
   ...
 )
@@ -20,6 +21,7 @@ acti_plot_day(
   value,
   time = time,
   breaks = "4 hours",
+  connector = c("linear", "step", "line"),
   facet = c("date", "month-day", "day"),
   ...
 )
@@ -39,17 +41,15 @@ For example, \code{steps} or \code{"counts"}.}
 \code{"15 mins"}. It controls x-axis spacing. Use \code{NULL} for ggplot2's
 default on the full-time plot or no specified breaks on aligned plots.}
 
+\item{connector}{Should a \code{geom_step} (\code{step}) or \code{geom_line}
+(\code{linear}/\code{line}) be used to connect points?}
+
 \item{x_axis}{The x-axis labelling scheme for \code{acti_plot_time()}. Use
 \code{"default"} to use \code{breaks} or \code{ggplot2}'s default; \code{"12 hours"} to show
 a date and 12-hour clock label every 12 hours; or \code{"midnight"} to label
 each date only at midnight. The latter two options set their own breaks.}
 
 \item{...}{Additional arguments passed to the primary geom.}
-
-\item{facet}{The facet labels for \code{acti_plot_day()}: \code{"date"} for the full
-date, \code{"month-day"} for a date without the year, or \code{"day"} for days
-since the first recording day (as calculated by
-\code{\link[actibase:acti_separate_times]{actibase::acti_separate_times()}}).}
 }
 \value{
 A ggplot object.

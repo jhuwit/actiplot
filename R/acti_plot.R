@@ -21,11 +21,9 @@
 #'   `"default"` to use `breaks` or `ggplot2`'s default; `"12 hours"` to show
 #'   a date and 12-hour clock label every 12 hours; or `"midnight"` to label
 #'   each date only at midnight. The latter two options set their own breaks.
-#' @param facet The facet labels for `acti_plot_day()`: `"date"` for the full
-#'   date, `"month-day"` for a date without the year, or `"day"` for days
-#'   since the first recording day (as calculated by
-#'   [actibase::acti_separate_times()]).
 #' @param ... Additional arguments passed to the primary geom.
+#' @param connector Should a `geom_step` (`step`) or `geom_line`
+#'   (`linear`/`line`) be used to connect points?
 #'
 #' @return A ggplot object.
 #' @examples
@@ -40,8 +38,16 @@
 #'
 #' @export
 acti_plot_time <- function(data, value, time = time, breaks = NULL,
-                           x_axis = c("default", "12 hours", "midnight"), ...) {
+                           connector = c("linear", "step", "line"),
+                           x_axis = c("default", "12 hours", "midnight"),
+                           ...
+                           ) {
   .acti_plot_check_value(value)
+  connector = match.arg(connector, choices = c("linear", "step", "line"))
+  geom_liner = switch(connector,
+                      step = ggplot2::geom_step,
+                      linear = ggplot2::geom_line,
+                      line = ggplot2::geom_line)
   value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
   time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
   x_axis <- match.arg(x_axis)
@@ -51,7 +57,7 @@ acti_plot_time <- function(data, value, time = time, breaks = NULL,
     prepared,
     ggplot2::aes(x = .data[["time"]], y = .data[[value_name]])
   ) +
-    ggplot2::geom_line(...) +
+    geom_liner(...) +
     ggplot2::labs(x = "Time", y = value_name)
 
   if (x_axis == "12 hours") {
@@ -78,8 +84,14 @@ acti_plot_time <- function(data, value, time = time, breaks = NULL,
 #' @rdname acti_plot_time
 #' @export
 acti_plot_day <- function(data, value, time = time, breaks = "4 hours",
+                          connector = c("linear", "step", "line"),
                           facet = c("date", "month-day", "day"), ...) {
   .acti_plot_check_value(value)
+  connector = match.arg(connector, choices = c("linear", "step", "line"))
+  geom_liner = switch(connector,
+                      step = ggplot2::geom_step,
+                      linear = ggplot2::geom_line,
+                      line = ggplot2::geom_line)
   value_name <- .acti_plot_column_name(rlang::enquo(value), "value")
   time_name <- .acti_plot_column_name(rlang::enquo(time), "time")
   facet <- match.arg(facet)
@@ -90,7 +102,7 @@ acti_plot_day <- function(data, value, time = time, breaks = "4 hours",
     prepared,
     ggplot2::aes(x = .data[[".acti_minutes"]], y = .data[[value_name]])
   ) +
-    ggplot2::geom_line(...) +
+    geom_liner(...) +
     ggplot2::facet_grid(rows = ggplot2::vars(!!rlang::sym(".acti_facet"))) +
     ggplot2::labs(x = "Time of day", y = value_name)
 
