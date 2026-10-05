@@ -14,6 +14,7 @@ acti_plot_time(
   value,
   time = time,
   breaks = NULL,
+  connector = c("linear", "step", "line"),
   x_axis = c("default", "12 hours", "midnight"),
   ...
 )
@@ -23,6 +24,7 @@ acti_plot_day(
   value,
   time = time,
   breaks = "4 hours",
+  connector = c("linear", "step", "line"),
   facet = c("date", "month-day", "day"),
   ...
 )
@@ -52,6 +54,11 @@ acti_plot_heatmap(data, value, time = time, breaks = "4 hours", ...)
   controls x-axis spacing. Use `NULL` for ggplot2's default on the
   full-time plot or no specified breaks on aligned plots.
 
+- connector:
+
+  Should a `geom_step` (`step`) or `geom_line` (`linear`/`line`) be used
+  to connect points?
+
 - x_axis:
 
   The x-axis labelling scheme for `acti_plot_time()`. Use `"default"` to
@@ -62,13 +69,6 @@ acti_plot_heatmap(data, value, time = time, breaks = "4 hours", ...)
 - ...:
 
   Additional arguments passed to the primary geom.
-
-- facet:
-
-  The facet labels for `acti_plot_day()`: `"date"` for the full date,
-  `"month-day"` for a date without the year, or `"day"` for days since
-  the first recording day (as calculated by
-  [`actibase::acti_separate_times()`](https://jhuwit.github.io/actibase/reference/acti_separate_time.html)).
 
 ## Value
 
