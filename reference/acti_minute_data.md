@@ -41,7 +41,8 @@ A tibble with 10,080 rows and 7 variables:
 
 ## Source
 
-The Figshare collection at <doi:10.6084/m9.figshare.c.4457855>.
+The Figshare collection from Chadwell (2019)
+<doi:10.6084/m9.figshare.c.4457855>.
 
 ## Details
 

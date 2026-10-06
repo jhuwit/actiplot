@@ -21,3 +21,7 @@ geom_wear(data, start = "start", end = "end", ...)
 - ...:
 
   Arguments passed to ggplot2::geom_rect().
+
+## Value
+
+A ggplot2 layer.
