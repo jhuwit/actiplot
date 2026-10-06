@@ -35,6 +35,7 @@ geom_episode <- function(data, start = "start", end = "end", ...) {
 
 #' Add sleep-window intervals
 #' @inheritParams geom_episode
+#' @return A ggplot2 layer.
 #' @export
 geom_sleep_window <- function(data, start = "start", end = "end", ...) {
   geom_episode(data, start = start, end = end, fill = "navy", alpha = 0.12, ...)
@@ -42,6 +43,7 @@ geom_sleep_window <- function(data, start = "start", end = "end", ...) {
 
 #' Add wear intervals
 #' @inheritParams geom_episode
+#' @return A ggplot2 layer.
 #' @export
 geom_wear <- function(data, start = "start", end = "end", ...) {
   geom_episode(data, start = start, end = end, fill = "forestgreen", alpha = 0.10, ...)

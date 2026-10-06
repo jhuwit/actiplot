@@ -6,7 +6,7 @@
 \alias{actiplot-package}
 \title{actiplot: Plotting Minute-Level Activity Data}
 \description{
-Provides 'ggplot2' plots for minute-level activity data, including step counts and activity counts. Time series can be displayed over the full recording period or aligned by time of day and faceted into one row per date.
+Provides 'ggplot2' plots for minute-level activity data, including step counts and activity counts. Time series can be displayed over the full recording period or aligned by time of day and faceted into one row per date. Includes example activity data described by Chadwell et al. (2019) \doi{10.1038/s41597-019-0211-6}.
 }
 \seealso{
 Useful links:

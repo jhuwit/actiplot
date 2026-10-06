@@ -16,7 +16,7 @@ A tibble with 10,080 rows and 7 variables:
 }
 \source{
 The
-Figshare collection at \url{doi:10.6084/m9.figshare.c.4457855}.
+Figshare collection from Chadwell (2019) \url{doi:10.6084/m9.figshare.c.4457855}.
 }
 \usage{
 acti_minute_data

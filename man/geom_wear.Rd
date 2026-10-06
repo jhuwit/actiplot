@@ -13,6 +13,9 @@ geom_wear(data, start = "start", end = "end", ...)
 
 \item{...}{Arguments passed to ggplot2::geom_rect().}
 }
+\value{
+A ggplot2 layer.
+}
 \description{
 Add wear intervals
 }

@@ -20,7 +20,7 @@
 #'   \item{wear}{Whether the minute was classified as wear time.}
 #' }
 #' @source The
-#'   Figshare collection at <doi:10.6084/m9.figshare.c.4457855>.
+#'   Figshare collection from Chadwell (2019) <doi:10.6084/m9.figshare.c.4457855>.
 #' @references Chadwell, A., Kenney, L., Granat, M., Thies, S., Galpin, A., &
 #'   Head, J. (2019). Upper limb activity of twenty myoelectric prosthesis users
 #'   and twenty healthy anatomically intact adults. *Scientific Data*, 6, 199.
