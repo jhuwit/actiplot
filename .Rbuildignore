@@ -27,3 +27,4 @@
 ^CRAN-SUBMISSION$
 ^doc$
 ^Meta$
+^counts\.rds$
