@@ -77,3 +77,8 @@ acti_plot_time(acti_minute_data, counts, x_axis = "midnight")
 ```{r}
 acti_plot_day(acti_minute_data, counts, breaks = "4 hours")
 ```
+
+## Funding acknowledgement
+
+This work was supported by NIH grant P30AG021334 and the Johns Hopkins Older
+Americans Independence Center (OAIC) Pepper Center grant.

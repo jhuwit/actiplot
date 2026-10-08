@@ -93,3 +93,8 @@ acti_plot_day(acti_minute_data, counts, breaks = "4 hours")
 ```
 
 ![](man/figures/README-unnamed-chunk-1-1.png)<!-- -->
+
+## Funding acknowledgement
+
+This work was supported by NIH grant P30AG021334 and the Johns Hopkins
+Older Americans Independence Center (OAIC) Pepper Center grant.
